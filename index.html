@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Idle Mana Tycoon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1a1a2e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .mana-bar-container {
+            width: 90%;
+            margin: 20px auto;
+            background: #444;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .mana-bar {
+            height: 30px;
+            background: #00f7ff;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .mana-regen-indicator {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            color: #fff;
+            font-size: 14px;
+            display: none;
+        }
+        .container {
+            margin-top: 20px;
+            padding: 10px;
+        }
+        button {
+            margin: 10px;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 90%;
+            max-width: 300px;
+        }
+        .spell-btn { background: #007bff; color: white; }
+        .building-btn { background: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Idle Mana Tycoon</h1>
+    <div class="mana-bar-container">
+        <div id="manaBar" class="mana-bar"></div>
+        <div id="manaRegenIndicator" class="mana-regen-indicator">+0/s</div>
+    </div>
+    <p>Mana: <span id="mana">0</span> / <span id="maxMana">100</span></p>
+    <div class="container">
+        <button class="spell-btn" onclick="conjureSpell()">Conjure Spell (-10 Mana)</button>
+        <button class="building-btn" onclick="buyBuilding()">Buy Wizard Tower (Cost: 50 Mana)</button>
+    </div>
+    <p>Wizard Towers: <span id="buildings">0</span></p>
+    <script>
+        let mana = 0;
+        let maxMana = 100;
+        let buildings = 0;
+        let manaRegen = 0;function saveGame() {
+        localStorage.setItem("mana", mana);
+        localStorage.setItem("buildings", buildings);
+        localStorage.setItem("manaRegen", manaRegen);
+    }
+
+    function loadGame() {
+        mana = parseInt(localStorage.getItem("mana")) || 0;
+        buildings = parseInt(localStorage.getItem("buildings")) || 0;
+        manaRegen = parseInt(localStorage.getItem("manaRegen")) || 0;
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById("mana").innerText = mana;
+        document.getElementById("maxMana").innerText = maxMana;
+        document.getElementById("buildings").innerText = buildings;
+        document.getElementById("manaBar").style.width = (mana / maxMana) * 100 + "%";
+        
+        let regenIndicator = document.getElementById("manaRegenIndicator");
+        if (manaRegen > 0) {
+            regenIndicator.innerText = `+${manaRegen}/s`;
+            regenIndicator.style.display = "block";
+        } else {
+            regenIndicator.style.display = "none";
+        }
+        saveGame();
+    }
+
+    function conjureSpell() {
+        if (mana >= 10) {
+            mana -= 10;
+        } else {
+            mana = 0;
+        }
+        updateUI();
+    }
+
+    function buyBuilding() {
+        if (mana >= 50) {
+            mana -= 50;
+            buildings += 1;
+            manaRegen += 2; 
+            updateUI();
+        }
+    }
+
+    function passiveManaGain() {
+        if (mana + manaRegen <= maxMana) {
+            mana += manaRegen;
+        } else {
+            mana = maxMana;
+        }
+        updateUI();
+    }
+
+    window.onload = loadGame;
+    setInterval(passiveManaGain, 1000);
+    setInterval(saveGame, 5000);
+</script>
+
+</body>
+</html>
