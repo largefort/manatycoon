@@ -65,19 +65,17 @@
     </div>
     <p>Wizard Towers: <span id="buildings">0</span></p>
     <script>
-        let mana = 100;
-        let maxMana = 100;
-        let buildings = 0;
-        let manaRegen = 0;function saveGame() {
+        let mana = parseInt(localStorage.getItem("mana")) || 100;
+        let maxMana = parseInt(localStorage.getItem("maxMana")) || 100;
+        let buildings = parseInt(localStorage.getItem("buildings")) || 0;
+        let manaRegen = parseInt(localStorage.getItem("manaRegen")) || 0;function saveGame() {
         localStorage.setItem("mana", mana);
+        localStorage.setItem("maxMana", maxMana);
         localStorage.setItem("buildings", buildings);
         localStorage.setItem("manaRegen", manaRegen);
     }
 
     function loadGame() {
-        mana = parseInt(localStorage.getItem("mana")) || 100;
-        buildings = parseInt(localStorage.getItem("buildings")) || 0;
-        manaRegen = parseInt(localStorage.getItem("manaRegen")) || 0;
         updateUI();
     }
 
@@ -110,7 +108,8 @@
         if (mana >= 50) {
             mana -= 50;
             buildings += 1;
-            manaRegen += 2; 
+            manaRegen += 2;
+            maxMana += 10; 
             updateUI();
         }
     }
