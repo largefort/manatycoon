@@ -58,14 +58,14 @@
         <div id="manaBar" class="mana-bar"></div>
         <div id="manaRegenIndicator" class="mana-regen-indicator">+0/s</div>
     </div>
-    <p>Mana: <span id="mana">0</span> / <span id="maxMana">100</span></p>
+    <p>Mana: <span id="mana">10</span> / <span id="maxMana">100</span></p>
     <div class="container">
         <button class="spell-btn" onclick="conjureSpell()">Conjure Spell (-10 Mana)</button>
         <button class="building-btn" onclick="buyBuilding()">Buy Wizard Tower (Cost: 50 Mana)</button>
     </div>
     <p>Wizard Towers: <span id="buildings">0</span></p>
     <script>
-        let mana = 0;
+        let mana = 10;
         let maxMana = 100;
         let buildings = 0;
         let manaRegen = 0;function saveGame() {
