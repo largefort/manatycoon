@@ -75,7 +75,7 @@
     }
 
     function loadGame() {
-        mana = parseInt(localStorage.getItem("mana")) || 0;
+        mana = parseInt(localStorage.getItem("mana")) || 10;
         buildings = parseInt(localStorage.getItem("buildings")) || 0;
         manaRegen = parseInt(localStorage.getItem("manaRegen")) || 0;
         updateUI();
